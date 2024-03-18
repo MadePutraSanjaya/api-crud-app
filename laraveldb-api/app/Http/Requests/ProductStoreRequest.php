@@ -11,9 +11,10 @@ class ProductStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        // return false;
+        return true;
     }
 
     /**
@@ -23,35 +24,34 @@ class ProductStoreRequest extends FormRequest
      */
     public function rules():array
     {
-       if (request()->isMethod('post')) {
-        return [
-            'name' => 'required|string|max:258',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string|'
-        ];
-       } else {
-        return [
-            'name' => 'required|string|max:258',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string'
-        ];
-       }
+        if(request()->isMethod('post')) {
+            return [
+                'name' => 'required|string|max:258',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'description' => 'required|string'
+            ];
+        } else {
+            return [
+                'name' => 'required|string|max:258',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'description' => 'required|string'
+            ];
+        }
     }
 
     public function message()
     {
-       if (request()->isMethod('post')) {
-        return [
-            'name' => 'Name is required',
-            'image' => 'Image is required',
-            'description' => 'Description is required'
-        ];
-       } else {
-        return [
-            'name' => 'Name is required',
-            'image' => 'Image is required',
-            'description' => 'Description is required'
-        ];
-       }
+        if(request()->isMethod('post')) {
+            return [
+                'name.required' => 'Name is required!',
+                'image.required' => 'Image is required!',
+                'description.required' => 'Descritpion is required!'
+            ];
+        } else {
+            return [
+                'name.required' => 'Name is required!',
+                'description.required' => 'Descritpion is required!'
+            ];   
+        }
     }
 }
